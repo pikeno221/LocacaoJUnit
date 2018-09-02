@@ -1,4 +1,4 @@
-package com.gabriel.entidades;
+package com.gabriel.model;
 
 import java.util.Date;
 
