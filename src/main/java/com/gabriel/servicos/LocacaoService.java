@@ -6,9 +6,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Test;
+
 import com.gabriel.model.Filme;
 import com.gabriel.model.Locacao;
 import com.gabriel.model.Usuario;
+import com.gabriel.utils.DataUtils;
 
 public class LocacaoService {
 
@@ -34,6 +37,11 @@ public class LocacaoService {
 
 		// Entrega no dia seguinte
 		Date dataEntrega = new Date();
+		if (DataUtils.verificarDiaSemana(adicionarDias(dataEntrega, 1), 1)){
+			dataEntrega = adicionarDias(dataEntrega, 2);
+		}
+	
+	
 		dataEntrega =
 
 				adicionarDias(dataEntrega, 1);
@@ -80,4 +88,7 @@ public class LocacaoService {
 
 		return filmes;
 	}
+	
+	
+	
 }

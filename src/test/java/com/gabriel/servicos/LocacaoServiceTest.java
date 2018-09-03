@@ -6,12 +6,17 @@ import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -20,6 +25,7 @@ import org.junit.rules.ExpectedException;
 import com.gabriel.model.Filme;
 import com.gabriel.model.Locacao;
 import com.gabriel.model.Usuario;
+import com.gabriel.utils.DataUtils;
 
 public class LocacaoServiceTest {
 
@@ -210,5 +216,19 @@ public class LocacaoServiceTest {
 			valorTotal += filme.getPrecoLocacao();
 		}
 		assertEquals(42.00, valorTotal, 0.01);
+	}
+
+	@Test
+	//@Ignore
+	public void naoDeveDevolverFilmeNoDomingo() throws Exception {	
+		Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
+		
+		Usuario user = new Usuario(1, "User1");
+		List<Filme> filmes = Arrays.asList(new Filme(1, "Filme1", 1, 5.0));
+
+		Locacao retorno = service.alugarFilme(user, filmes);
+
+		boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
+		Assert.assertTrue(ehSegunda);
 	}
 }
