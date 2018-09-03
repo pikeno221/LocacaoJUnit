@@ -48,4 +48,20 @@ public class Filme {
 	public void setPrecoLocacao(Double precoLocacao) {
 		this.precoLocacao = precoLocacao;
 	}
+
+	public double getDesconto(int qnt) {
+		switch (qnt) {
+		case 3:
+			return (25.0/100.0);
+		case 4:
+			return (50.0/100.0);
+		case 5:
+			return (75.0/100.0);
+		case 6:
+			return (100/100);
+		default:
+			return 0.0;
+
+		}
+	}
 }

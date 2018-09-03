@@ -1,19 +1,15 @@
 package com.gabriel.servicos;
 
-import static com.gabriel.utils.DataUtils.isMesmaData;
-import static com.gabriel.utils.DataUtils.obterDataComDiferencaDias;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -40,24 +36,19 @@ public class LocacaoServiceTest {
 	@Before
 	public void setup() {
 		service = new LocacaoService();
-		System.out.println("before");
 		contator++;
-		System.out.println(contator);
 	}
 
 	@After
 	public void tearDown() {
-		System.out.println("after");
 	}
 
 	@BeforeClass
 	public static void setupCLass() {
-		System.out.println("before Class");
 	}
 
 	@AfterClass
 	public static void tearDownClass() {
-		System.out.println("after Class");
 	}
 
 	@Test
@@ -82,7 +73,8 @@ public class LocacaoServiceTest {
 		 */
 	}
 
-	@Test//(expected = RuntimeException.class) // Preparando método para receber uma excessão
+	@Test // (expected = RuntimeException.class) // Preparando método para receber uma
+			// excessão
 	public void testeLocacao_FilmeSemEstoque() throws Exception {
 		Usuario usuario = new Usuario(1, "Usuario 1");
 
@@ -112,25 +104,111 @@ public class LocacaoServiceTest {
 
 	@Test
 	public void testeLocacao_FilmeSemEstoque_3() throws Exception {
-
 		Usuario usuario = new Usuario(1, "Usuario 1");
-
 		Filme filme = new Filme(1, "Filme 1", 0, 7.0);
-
-//		exception.expect(RuntimeException.class);
-//		exception.expectMessage("Filme não disponível no estoque");
+		// exception.expect(RuntimeException.class);
+		// exception.expectMessage("Filme não disponível no estoque");
 
 		service.alugarFilme(usuario, service.adicionaFilmesLocacao());
 	}
-	
-	@Test 
+
+	@Test
 	public void testaLocacao_ValorEmprestimo() throws Exception {
-		
+
 		Usuario usuario = new Usuario(1, "Usuario 1");
-		
+
 		Locacao locacao = service.alugarFilme(usuario, service.adicionaFilmesLocacao());
-		System.out.println(locacao.getValor());
 		assertEquals(14.5, locacao.getValor(), 0.01);
-		//assertThat(, 0.0, 0.01);
+		// assertThat(, 0.0, 0.01);
+	}
+
+	@Test
+	public void testaDesconto3Filmes() throws Exception {
+		Double valorTotal = 0.0;
+		Filme filme0 = new Filme(0, "Filme 0", 1, 7.0);
+		Filme filme1 = new Filme(1, "Filme 1", 2, 7.0);
+		Filme filme2 = new Filme(2, "Filme 2", 2, 7.5);
+
+		List<Filme> filmes = Arrays.asList(filme0, filme1, filme2);
+		service.aplicaDesconto(filmes);
+
+		for (Filme filme : filmes) {
+			valorTotal += filme.getPrecoLocacao();
+		}
+		assertEquals(19.62, valorTotal, 0.01);
+	}
+
+	@Test
+	public void testaDesconto4Filmes() throws Exception {
+		Double valorTotal = 0.0;
+		Filme filme0 = new Filme(0, "Filme 0", 1, 7.0);
+		Filme filme1 = new Filme(1, "Filme 1", 2, 7.0);
+		Filme filme2 = new Filme(2, "Filme 2", 2, 7.0);
+		Filme filme3 = new Filme(3, "Filme 3", 2, 7.0);
+
+		List<Filme> filmes = Arrays.asList(filme0, filme1, filme2, filme3);
+		service.aplicaDesconto(filmes);
+
+		for (Filme filme : filmes) {
+			valorTotal += filme.getPrecoLocacao();
+		}
+		assertEquals(24.50, valorTotal, 0.01);
+	}
+
+	@Test
+	public void testaDesconto5Filmes() throws Exception {
+		Double valorTotal = 0.0;
+		Filme filme0 = new Filme(0, "Filme 0", 1, 7.0);
+		Filme filme1 = new Filme(1, "Filme 1", 2, 7.0);
+		Filme filme2 = new Filme(2, "Filme 2", 2, 7.0);
+		Filme filme3 = new Filme(3, "Filme 3", 2, 7.0);
+		Filme filme4 = new Filme(4, "Filme 4", 2, 7.0);
+
+		List<Filme> filmes = Arrays.asList(filme0, filme1, filme2, filme3, filme4);
+		service.aplicaDesconto(filmes);
+
+		for (Filme filme : filmes) {
+			valorTotal += filme.getPrecoLocacao();
+		}
+		assertEquals(29.75, valorTotal, 0.01);
+	}
+
+	@Test
+	public void testaDesconto6Filmes() throws Exception {
+		Double valorTotal = 0.0;
+		Filme filme0 = new Filme(0, "Filme 0", 1, 7.0);
+		Filme filme1 = new Filme(1, "Filme 1", 2, 7.0);
+		Filme filme2 = new Filme(2, "Filme 2", 2, 7.0);
+		Filme filme3 = new Filme(3, "Filme 3", 2, 7.0);
+		Filme filme4 = new Filme(4, "Filme 4", 2, 7.0);
+		Filme filme5 = new Filme(5, "Filme 5", 2, 7.0);
+
+		List<Filme> filmes = Arrays.asList(filme0, filme1, filme2, filme3, filme4, filme5);
+		service.aplicaDesconto(filmes);
+
+		for (Filme filme : filmes) {
+			valorTotal += filme.getPrecoLocacao();
+		}
+		assertEquals(35.00, valorTotal, 0.01);
+	}
+
+	@Test
+	public void testaDesconto7Filmes() throws Exception {
+		Double valorTotal = 0.0;
+		Filme filme0 = new Filme(0, "Filme 0", 1, 7.0);
+		Filme filme1 = new Filme(1, "Filme 1", 2, 7.0);
+		Filme filme2 = new Filme(2, "Filme 2", 2, 7.0);
+		Filme filme3 = new Filme(3, "Filme 3", 2, 7.0);
+		Filme filme4 = new Filme(4, "Filme 4", 2, 7.0);
+		Filme filme5 = new Filme(5, "Filme 5", 2, 7.0);
+		Filme filme6 = new Filme(6, "Filme 6", 2, 7.0);
+
+		List<Filme> filmes = Arrays.asList(filme0, filme1, filme2, filme3, filme4, filme5, filme6);
+		service.aplicaDesconto(filmes);
+
+		for (Filme filme : filmes) {
+			valorTotal += filme.getPrecoLocacao();
+		}
+		assertEquals(42.00, valorTotal, 0.01);
 	}
 }

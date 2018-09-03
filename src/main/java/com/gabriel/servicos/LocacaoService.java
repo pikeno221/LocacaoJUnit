@@ -2,7 +2,6 @@ package com.gabriel.servicos;
 
 import static com.gabriel.utils.DataUtils.adicionarDias;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +40,6 @@ public class LocacaoService {
 		locacao.setDataRetorno(dataEntrega);
 
 		// Salvando a locacao...
-		// TODO adicionar método para salvar
 
 		return locacao;
 	}
@@ -51,8 +49,35 @@ public class LocacaoService {
 		Filme filme2 = new Filme(2, "Filme 2", 2, 7.5);
 
 		List<Filme> filmes = Arrays.asList(filme1, filme2);
+		return filmes;
+	}
+
+	public List<Filme> aplicaDesconto(List<Filme> filmes) {
+		Filme filmeAux;
+		int qnt = filmes.size();
+		switch (qnt) {
+		case 3:
+			filmeAux = filmes.get(2);
+			filmeAux.setPrecoLocacao(
+					(filmeAux.getPrecoLocacao() - (filmeAux.getPrecoLocacao() * filmeAux.getDesconto(3))));
+			break;
+		case 4:
+			filmeAux = filmes.get(3);
+			filmeAux.setPrecoLocacao(
+					(filmeAux.getPrecoLocacao() - (filmeAux.getPrecoLocacao() * filmeAux.getDesconto(4))));
+			break;
+		case 5:
+			filmeAux = filmes.get(4);
+			filmeAux.setPrecoLocacao(
+					(filmeAux.getPrecoLocacao() - (filmeAux.getPrecoLocacao() * filmeAux.getDesconto(5))));
+			break;
+		}
+
+		if (filmes.size() >= 6) {
+			Filme filmeAux2 = filmes.get(filmes.size() -1);
+			filmeAux2.setPrecoLocacao(filmeAux2.getPrecoLocacao() - ((filmeAux2.getPrecoLocacao() * filmeAux2.getDesconto(6))));
+		}
 
 		return filmes;
-
 	}
 }
