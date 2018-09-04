@@ -127,7 +127,7 @@ public class LocacaoServiceTest {
 		assertEquals(14.5, locacao.getValor(), 0.01);
 		// assertThat(, 0.0, 0.01);
 	}
-
+/*
 	@Test
 	public void testaDesconto3Filmes() throws Exception {
 		Double valorTotal = 0.0;
@@ -217,7 +217,7 @@ public class LocacaoServiceTest {
 		}
 		assertEquals(42.00, valorTotal, 0.01);
 	}
-
+*/
 	@Test
 	//@Ignore
 	public void naoDeveDevolverFilmeNoDomingo() throws Exception {	

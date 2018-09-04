@@ -3,6 +3,7 @@ package com.gabriel.servicos;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -15,6 +16,8 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.gabriel.model.Filme;
+import com.gabriel.model.Locacao;
+import com.gabriel.model.Usuario;
 
 @RunWith(Parameterized.class)
 public class CalculoValorLocacaoTest {
@@ -32,7 +35,12 @@ public class CalculoValorLocacaoTest {
 	@Before
 	public void setup() {
 		service = new LocacaoService();
+		valorOriginalFilme = new ArrayList<>();
+		for (Filme filme : filmes) {
+			valorOriginalFilme.add(filme.getPrecoLocacao());
+		}
 	}
+	private List<Double> valorOriginalFilme; 
 
 	private static Filme filme0 = new Filme(0, "Filme 0", 1, 7.0);
 	private static Filme filme1 = new Filme(1, "Filme 1", 2, 7.0);
@@ -44,23 +52,20 @@ public class CalculoValorLocacaoTest {
 
 	@Parameters(name = "{2}")
 	public static Collection<Object[]> getParametros() {
-		return Arrays.asList(new Object[][] { { Arrays.asList(filme0, filme1, filme2), 19.62, "3 filmes: 25%" },
+		return Arrays.asList(new Object[][] { { Arrays.asList(filme0, filme1, filme2), 19.25, "3 filmes: 25%" },
 				{ Arrays.asList(filme0, filme1, filme2, filme3), 24.50, "4 filmes: 50%" },
 				{ Arrays.asList(filme0, filme1, filme2, filme3, filme4), 29.75, "5 filmes: 75%" },
 				{ Arrays.asList(filme0, filme1, filme2, filme3, filme4, filme5), 35.00, "6 filmes: 100%" },
-				{ Arrays.asList(filme0, filme1, filme2, filme3, filme4, filme5, filme6),42.00, "7 filmes: 100%"  }, });
+				{ Arrays.asList(filme0, filme1, filme2, filme3, filme4, filme5, filme6), 42.00, "7 filmes: 100%" }, });
 	}
 
 	@Test
 	public void testaLocacao_ValorEmprestimo() throws Exception {
-		Double valorTotal = 0.0;
-
-		service.aplicaDesconto(filmes);
-		for (Filme filme : filmes) {
-			valorTotal += filme.getPrecoLocacao();
-		}
+		Usuario usuario = new Usuario(1, "Usuario 1");
+		Locacao locacao = service.alugarFilme(usuario, filmes);
+		service.aplicaDesconto(locacao);
 		// assertEquals(24.50, valorTotal, 0.01);
-		assertThat(valorTotal, is(valorLocacao));
+		assertThat(locacao.getValor(), is(valorLocacao));
 	}
 
 }

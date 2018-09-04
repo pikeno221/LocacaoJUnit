@@ -31,17 +31,17 @@ public class LocacaoService {
 			}
 			totalPrecoLocacao += filme.getPrecoLocacao();
 		}
+		locacao.setFilmes(filmes);
 		locacao.setValor(totalPrecoLocacao);
 		locacao.setUsuario(usuario);
 		locacao.setDataLocacao(new Date());
 
 		// Entrega no dia seguinte
 		Date dataEntrega = new Date();
-		if (DataUtils.verificarDiaSemana(adicionarDias(dataEntrega, 1), 1)){
+		if (DataUtils.verificarDiaSemana(adicionarDias(dataEntrega, 1), 1)) {
 			dataEntrega = adicionarDias(dataEntrega, 2);
 		}
-	
-	
+
 		dataEntrega =
 
 				adicionarDias(dataEntrega, 1);
@@ -60,35 +60,27 @@ public class LocacaoService {
 		return filmes;
 	}
 
-	public List<Filme> aplicaDesconto(List<Filme> filmes) {
-		Filme filmeAux;
-		int qnt = filmes.size();
-		switch (qnt) {
+	public void aplicaDesconto(Locacao locacao) {
+		switch (locacao.getFilmes().size()) {
 		case 3:
-			filmeAux = filmes.get(2);
-			filmeAux.setPrecoLocacao(
-					(filmeAux.getPrecoLocacao() - (filmeAux.getPrecoLocacao() * filmeAux.getDesconto(3))));
+			locacao.setValor(locacao.getValor()
+					- (locacao.getFilmes().get(2).getPrecoLocacao() * locacao.getFilmes().get(2).getDesconto(3)));
 			break;
 		case 4:
-			filmeAux = filmes.get(3);
-			filmeAux.setPrecoLocacao(
-					(filmeAux.getPrecoLocacao() - (filmeAux.getPrecoLocacao() * filmeAux.getDesconto(4))));
+			locacao.setValor(locacao.getValor()
+					- (locacao.getFilmes().get(3).getPrecoLocacao() * locacao.getFilmes().get(3).getDesconto(4)));
 			break;
 		case 5:
-			filmeAux = filmes.get(4);
-			filmeAux.setPrecoLocacao(
-					(filmeAux.getPrecoLocacao() - (filmeAux.getPrecoLocacao() * filmeAux.getDesconto(5))));
+			locacao.setValor(locacao.getValor()
+					- (locacao.getFilmes().get(4).getPrecoLocacao() * locacao.getFilmes().get(4).getDesconto(5)));
 			break;
 		}
 
-		if (filmes.size() >= 6) {
-			Filme filmeAux2 = filmes.get(filmes.size() -1);
-			filmeAux2.setPrecoLocacao(filmeAux2.getPrecoLocacao() - ((filmeAux2.getPrecoLocacao() * filmeAux2.getDesconto(6))));
+		if (locacao.getFilmes().size() >= 6) {
+			locacao.setValor(locacao.getValor()
+					- (locacao.getFilmes().get(5).getPrecoLocacao() * locacao.getFilmes().get(5).getDesconto(6)));
 		}
 
-		return filmes;
 	}
-	
-	
-	
+
 }
