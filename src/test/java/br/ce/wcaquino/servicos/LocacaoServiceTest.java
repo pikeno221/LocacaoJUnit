@@ -127,6 +127,7 @@ public class LocacaoServiceTest {
 
 		// verificacao
 		assertThat(retorno.getDataRetorno(), caiNumaSegunda());
+		
 
 	}
 
@@ -137,6 +138,7 @@ public class LocacaoServiceTest {
 		List<Filme> filmes = Arrays.asList(umFilme().agora());
 
 		when(spc.possuiNegativacao(usuario)).thenReturn(true);
+		when(spc.possuiNegativacao(Mockito.any(Usuario.class))).thenReturn(true);
 
 		// acao
 		try {
@@ -148,6 +150,7 @@ public class LocacaoServiceTest {
 		}
 
 		verify(spc).possuiNegativacao(usuario);
+		verify(spc, Mockito.times(1)).possuiNegativacao(usuario);
 	}
 
 	@Test
@@ -165,6 +168,8 @@ public class LocacaoServiceTest {
 		service.notificarAtrasos();
 
 		// verificacao
+		verify(email, Mockito.times(2)).notificarAtraso(Mockito.any(Usuario.class));
+		
 		verify(email, Mockito.times(2)).notificarAtraso(usuario);
 		verify(email, Mockito.atLeast(1)).notificarAtraso(usuario);
 		verify(email, Mockito.atLeastOnce()).notificarAtraso(usuario);
